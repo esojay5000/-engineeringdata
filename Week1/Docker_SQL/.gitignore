@@ -1,2 +1,7 @@
 ny_taxi_postgres_data
 DEvenv
+.ipynb_checkpoints
+green_tripdata_2019-01.csv
+green_tripdata_2019-01_100.csv
+output.csv
+taxi+_zone_lookup.csv

@@ -1,0 +1,54 @@
+docker run -it \
+  -e POSTGRES_USER="root" \
+  -e POSTGRES_PASSWORD="root" \
+  -e POSTGRES_DB="ny_taxi" \
+  -v C:/Users/PC/Documents/GitHub/Data-Engineering/Week1/Docker_SQL/ny_taxi_postgres_data:/var/lib/postgresql/data \
+  -p 5432:5432 \
+  --network=pg-network \
+  --name pg-database \
+postgres:13
+
+docker ps
+docker exec -it <name of docker>
+root@bb47f3712f01:/# psql -d ny_tax
+\dt
+\d green_taxi_data
+SELECT COUNT(1) FROM green_taxi_data;
+
+SELECT 1
+
+
+docker run -it \
+  -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+  -e PGADMIN_DEFAULT_PASSWORD="root" \
+  -p 8080:80 \
+  --network=pg-network \
+  --name pg-admin4 \
+  dpage/pgadmin4
+
+URL="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
+
+python ingest_data.py \
+    --user=root \
+    --password=root \
+    --host=localhost \
+    --port=5432 \
+    --db=ny_taxi \
+    --table_name=green_taxi_data \
+    --url=${URL}
+
+Senior Data Scientist
+
+docker build -t taxi_ingest:v001 .
+
+# dockerizing the data ingestion
+docker run -it \
+  --network=pg-network \
+  taxi_ingest:v001 \
+    --user=root \
+    --password=root \
+    --host=pg-database \
+    --port=5432 \
+    --db=ny_taxi \
+    --table_name=green_taxi_data \
+    --url=${URL}
